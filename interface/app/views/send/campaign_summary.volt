@@ -8,7 +8,7 @@
                 <div class="col-xs-12">
                     <dl class="dl-horizontal">
                         <dt>Domain:</dt>
-                        <dd>{{ campaign.domain }}</dd>
+                        <dd>{{ campaign.domain.domain }}</dd>
                         <dt>Name:</dt>
                         <dd>{{ campaign.name }}</dd>
                         <dt>Description:</dt>
