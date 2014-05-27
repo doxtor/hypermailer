@@ -17,7 +17,7 @@ $loader
         APPLICATION_PATH . '/../routines'])
     ->register();
 
-require APPLICATION_PATH . '/../../_common/vendor/autoload.php';
+require APPLICATION_PATH . '/../../vendor/autoload.php';
 
 // cli di
 $di = new \Phalcon\DI\FactoryDefault\CLI();

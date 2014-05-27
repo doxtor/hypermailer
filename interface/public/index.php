@@ -30,7 +30,7 @@
 require '../../_common/config/components/common.php';
 
 // composer assets
-require '../../_common/vendor/autoload.php';
+require '../../vendor/autoload.php';
 
 try {
     // create a di
