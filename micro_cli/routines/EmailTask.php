@@ -122,9 +122,10 @@ class emailTask extends \Phalcon\CLI\Task {
             Events::log('Campaign routine status: ended in error', Events::ERROR);
         } else {
             Events::log('Campaign routine status: succeeded', Events::SUCCESS);
-            $campaign->update(array(
-                'date_started' => date('Y-m-d H:i:s')
-            ));
+
+            // since the campaign was started successfully, update the date started
+            $campaign->date_started = date('Y-m-d H:i:s');
+            $campaign->update();
         }
 
     }
