@@ -253,8 +253,14 @@ class ConfigurationController extends BaseController {
                     $system->value = $value;
                     $system->update();
 
-                    $this->flashSession->success('System Settings have been updated successfully');
+                } else {
+                    $newsystem = new System();
+                    $newsystem->key = $key;
+                    $newsystem->value = $value;
+                    $newsystem->create();
+
                 }
+                $this->flashSession->success('System Settings have been updated successfully');
             }
         }
 

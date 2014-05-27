@@ -34,15 +34,11 @@
     <script>
         $(function() {
             $('.preview').click(function() {
-                if ($('#template_id').val() !== '') {
                     $('.preview_content').load('/send/ajax_preview_campaign/',
                         {
                             'template_id' : $('#template_id').val(),
                             'content'     : $('#content').val()
                         });
-                } else {
-                    bootbox.alert('You must select a template to preview this email');
-                }
             });
         });
     </script>

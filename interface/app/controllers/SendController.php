@@ -241,7 +241,7 @@ class SendController extends BaseController {
         if ($this->request->isPost()) {
             $campaign_id = $this->request->getPost('campaign_id');
 
-            $cmd = ' cd ../../micro_cli/ && ./hm --send-campaign 33';
+            $cmd = '../../micro_cli/hm --send-campaign 33';
             //exec ./hm --send-campaign id &
             exec($cmd . " > /dev/null &");
 
@@ -256,14 +256,16 @@ class SendController extends BaseController {
      */
     public function ajax_preview_campaignAction(){
         // get the template information
-        if($this->request->getPost('template_id')){
-            $template = Templates::findFirst($this->request->getPost('template_id'));
+        $template = Templates::findFirst($this->request->getPost('template_id'));
+
+        if($template){
+            $content = $template->header . $this->request->getPost('content') . $template->footer;
+        } else {
+            $content  = $this->request->getPost('content');
         }
-        // get the posted content
-        $content  = $this->request->getPost('content');
 
         // send the result
-        echo $template->header . $content . $template->footer;
+        echo $content;
         exit;
     }
 

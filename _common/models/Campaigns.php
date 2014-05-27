@@ -57,6 +57,9 @@ class Campaigns extends BaseModel {
 
     public function beforeCreate() {
         $this->date_created = date('Y-m-d H:i:s');
+        if(!$this->template_id){
+            $this->template_id = NULL;
+        }
     }
 
 }
