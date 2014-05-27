@@ -1,0 +1,3 @@
+.idea/
+*.volt.php
+interface/app/views/compiled_templates/*.php
