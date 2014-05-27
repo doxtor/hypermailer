@@ -28,7 +28,7 @@
                     <div class="col-xs-12">
                         <button type="submit" class="btn btn-primary"><i class="fa fa-check"></i> Update View</button>
                         <button type="button" class="btn btn-success view_data_set"><i class="fa fa-search"></i> View Data Set</button>
-                        <a href="/datasources/delete_view/{{ formatted_view.formatted_view_id }}" class="btn btn-danger pull-right" onclick="return confirm('Are you sure you want to delete this view?')"><i class="fa fa-times"></i> Delete View</a>
+                        <a href="/datasources/delete_view/{{ formatted_view.formatted_view_id }}" class="btn btn-danger pull-right" onclick="bconfirm(this, 'Are you sure you want to delete this view?'); return false;"><i class="fa fa-times"></i> Delete View</a>
                     </div>
                 </div>
             </form>

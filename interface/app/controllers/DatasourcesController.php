@@ -88,18 +88,28 @@ class DatasourcesController extends BaseController {
 
         $datasource_save = $datasource;
 
-        if ($datasource->delete()) {
+        try {
+            // attempt delete
+            $datasource->delete();
+
             // delete the users
             Datasources::delete_users($datasource_save);
+        } catch (Exception $e) {
+            switch ($e->getCode()) {
+                case 23000:
+                    $this->flashSession->error('This datasource cannot be removed because it is being used or has views');
+                    break;
 
-            // success
-            $this->flashSession->success('Datasource deleted successfully');
-            return $this->response->redirect('datasources');
-        } else {
-            // failed (constraint or unknown)
-            $this->flashSession->error('Could not delete this datasource right now');
+                default:
+                    $this->flashSession->error('Datasource cannot be removed right now');
+            }
+
             return $this->response->redirect('datasources');
         }
+
+        // success
+        $this->flashSession->success('Datasource deleted successfully');
+        return $this->response->redirect('datasources');
     }
 
     public function test_connectionAction() {
@@ -213,10 +223,30 @@ class DatasourcesController extends BaseController {
             return $this->response->redirect('datasources');
         }
 
-        if (!Datasources::delete_view($formatted_view_id)) {
-            $this->flashSession->error('View could not be deleted at this time');
-            return $this->response->redirect('datasources');
+        // get the formatted view information
+        $formatted_view = FormattedViews::findFirst($formatted_view_id);
+
+        // save the information to delete the view prior to the formatted view being deleted
+        $datasource_id = $formatted_view->datasource_id;
+        $formatted_view_name = $formatted_view->name;
+
+        try {
+            // attempt delete
+            $formatted_view->delete();
+        } catch (Exception $e) {
+            switch ($e->getCode()) {
+                case 23000:
+                    $this->flashSession->error('This view cannot be removed because it is being used');
+                    break;
+
+                default:
+                    $this->flashSession->error('View cannot be removed right now');
+            }
+
+            return $this->response->redirect('datasources/update_view/' . $formatted_view_id);
         }
+
+        Datasources::delete_view($datasource_id, $formatted_view_name);
 
         $this->flashSession->success('View was successfully deleted');
         return $this->response->redirect('datasources');

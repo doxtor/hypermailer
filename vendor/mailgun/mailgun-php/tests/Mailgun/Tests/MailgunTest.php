@@ -1,19 +1,18 @@
 <?PHP
-
-namespace Mailgun\Tests;
+namespace Mailgun\Tests\Lists;
 
 use Mailgun\Mailgun;
-use Mailgun\Tests\Connection\TestBroker;
 
-class MailgunTest extends Mailgun
+class MailgunTest extends \Mailgun\Tests\MailgunTestCase
 {
-	protected $debug;
-	protected $restClient;
-	
-	public function __construct($apiKey = null, $apiEndpoint = "api.mailgun.net", $apiVersion = "v2"){
-		$this->restClient = new TestBroker($apiKey, $apiEndpoint, $apiVersion);
-	}
-} 
 
+    public function testSendMessageMissingRequiredMIMEParametersExceptionGetsFlung()
+    {
+        $this->setExpectedException("\\Mailgun\\Messages\\Exceptions\\MissingRequiredMIMEParameters");
+
+        $client = new Mailgun();
+        $client->sendMessage("test.mailgun.com", "etss", 1);
+    }
+}
 
 ?>

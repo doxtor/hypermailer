@@ -241,12 +241,12 @@ class SendController extends BaseController {
         if ($this->request->isPost()) {
             $campaign_id = $this->request->getPost('campaign_id');
 
-            $cmd = ' cd ../../micro_cli/ && ./hm.sh --send-campaign 33';
-            //exec ./hm.sh --send-campaign id &
-             exec($cmd . " > /dev/null &");
+            $cmd = ' cd ../../micro_cli/ && ./hm --send-campaign 33';
+            //exec ./hm --send-campaign id &
+            exec($cmd . " > /dev/null &");
+
             $this->flashSession->success('Campaign has been started');
             return $this->response->redirect('send/campaign_summary/' . $campaign_id);
-
         }
     }
 

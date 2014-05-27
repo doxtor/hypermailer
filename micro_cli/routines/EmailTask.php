@@ -70,8 +70,7 @@ class emailTask extends \Phalcon\CLI\Task {
     }
 
     public function campaignAction(array $params = null) {
-
-        // get list of renewal emails
+        // get the campaign information
         $campaign = Campaigns::findFirst($params[1]);
 
         Events::log('Campaign '.$campaign->name.' routine status: started', Events::SUCCESS);
@@ -79,52 +78,52 @@ class emailTask extends \Phalcon\CLI\Task {
         // error counter
         $errors  = 0;
 
+        // instantiate a gateway for this particular dataset
+        $gateway = (new Gateway())->gen_datasource(
+            $campaign->formatted_view->datasource_id,
+            $campaign->formatted_view->name,
+            Gateway::SUPER);
 
-            // instantiate a gateway for this particular dataset
-            $gateway = (new Gateway())->gen_datasource(
-                $campaign->formatted_view->datasource_id,
-                $campaign->formatted_view->name,
-                Gateway::SUPER);
+        // get list of people to send the email to
+        $recipients = $gateway->find()->toArray();
 
-            // get list of people to send the email to
-            $recipients = $gateway->find()->toArray();
+        // check to make sure email_address is in the recipients array
 
-            // check to make sure email_address is in the recipients array
+        Events::log('Preparing ' . count($recipients) . ' recipients for ' . $campaign->name);
 
-            Events::log('Preparing ' . count($recipients) . ' recipients for ' . $campaign->name);
+        // create the standard class of batch email options
+        $options = new stdClass();
+        $options->campaign_id = $campaign->mg_campaign_id;
+        $options->from_email  = $campaign->from_name . ' <' . $campaign->from_email . '>';
+        $options->subject     = $campaign->subject;
+        $options->body        = $campaign->content;
 
-            // create the standard class of batch email options
-            $options = new stdClass();
-            $options->campaign_id = $campaign->mg_campaign_id;
-            $options->from_email  = $campaign->from_name . ' <' . $campaign->from_email . '>';
-            $options->subject     = $campaign->subject;
-            $options->body        = $campaign->content;
+        foreach ($recipients as $recipient) {
+            $options->recipients[] = $recipient;
+        }
 
-            foreach ($recipients as $recipient) {
-                $options->recipients[] = $recipient;
-            }
+        // create the mailgun instance
+        $mg = new MailGunAPI($campaign->domain->domain);
 
-            // create the mailgun instance
-            $mg = new MailGunAPI($campaign->domain->domain);
+        // send the emails
+        try {
+            //$mg->send_batch_email($options);
 
-            // send the emails
-            try {
-                //$mg->send_batch_email($options);
+            Events::log('Sent ' . count($recipients) . ' emails for ' . $campaign->name);
+        } catch (Exception $e) {
+            Events::log($campaign->name . ' failed: ' . $e->getMessage(), Events::ERROR);
 
-                Events::log('Sent ' . count($recipients) . ' emails for ' . $campaign->name);
-            } catch (Exception $e) {
-                Events::log($campaign->name . ' failed: ' . $e->getMessage(), Events::ERROR);
-
-                ++$errors;
-            }
+            ++$errors;
+        }
 
         if ($errors) {
             Events::log('Campaign routine status: ended in error', Events::ERROR);
         } else {
             Events::log('Campaign routine status: succeeded', Events::SUCCESS);
-            $campaign->update(array(
-                'date_started' => date('Y-m-d H:i:s')
-            ));
+
+            // update the started date
+            $campaign->date_started = date('Y-m-d H:i:s');
+            $campaign->update();
         }
 
     }

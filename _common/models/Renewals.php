@@ -37,7 +37,7 @@ class Renewals extends BaseModel {
         ]));
 
         $this->validate(new Regex([
-            'field'   => 'domain',
+            'field'   => 'domain_id',
             'pattern' => '/^.+$/',
             'message' => 'Domain must be picked'
         ]));

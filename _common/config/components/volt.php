@@ -1,12 +1,14 @@
 <?php
 
-$di->set('volt', function($view, $di) {
+$di->set('volt', function($view, $di) use ($config) {
     $volt = new \Phalcon\Mvc\View\Engine\Volt($view, $di);
+
+    $compile_always = ($config->state->development) ? true : false;
 
     $volt->setOptions([
         'compiledPath'      => '../app/views/compiled_templates/',
         'compiledSeparator' => '_',
-        'compileAlways'     => true
+        'compileAlways'     => $compile_always
     ]);
 
     $volt->getCompiler()->addFilter('datesubstr', function($res_args, $expr_args) {

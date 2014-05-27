@@ -25,7 +25,7 @@ class RenewalsController extends BaseController {
                 $renewal = new Renewals();
                 $renewal->setTransaction($transaction);
 
-                $renewal->domain            = $this->request->getPost('domain');
+                $renewal->domain_id         = $this->request->getPost('domain_id');
                 $renewal->formatted_view_id = $this->request->getPost('formatted_view_id');
                 $renewal->name              = $this->request->getPost('name');
                 $renewal->from_email        = $this->request->getPost('from_email');
@@ -40,7 +40,7 @@ class RenewalsController extends BaseController {
 
                 try {
                     // create a new mailgun instance
-                    $mg = new MailGunAPI($renewal->domain);
+                    $mg = new MailGunAPI($renewal->domain->domain);
 
                     // attempt to create the campaign
                     $result = $mg->create_campaign($renewal->name);
@@ -86,7 +86,7 @@ class RenewalsController extends BaseController {
 
                 $renewal->setTransaction($transaction);
 
-                $renewal->domain            = $this->request->getPost('domain');
+                $renewal->domain_id         = $this->request->getPost('domain_id');
                 $renewal->formatted_view_id = $this->request->getPost('formatted_view_id');
                 $renewal->name              = $this->request->getPost('name');
                 $renewal->from_email        = $this->request->getPost('from_email');
@@ -103,7 +103,7 @@ class RenewalsController extends BaseController {
                 if ($renewal->hasChanged('name')) {
                     try {
                         // create a new mailgun instance
-                        $mg = new MailGunAPI($renewal->domain);
+                        $mg = new MailGunAPI($renewal->domain->domain);
 
                         // attempt to update the campaign
                         $mg->update_campaign($renewal->mg_campaign_id, $renewal->name);
@@ -162,7 +162,7 @@ class RenewalsController extends BaseController {
 
             try {
                 // create a new mailgun instance
-                $mg = new MailGunAPI($renewal->domain);
+                $mg = new MailGunAPI($renewal->domain->domain);
 
                 // attempt to create the campaign
                 $mg->delete_campaign($renewal->mg_campaign_id);

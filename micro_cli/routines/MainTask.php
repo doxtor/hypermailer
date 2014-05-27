@@ -31,7 +31,7 @@ class mainTask extends \Phalcon\CLI\Task {
         echo 'This program comes with ABSOLUTELY NO WARRANTY' . PHP_EOL;
         echo 'This is free software, and you are welcome to redistribute it' . PHP_EOL;
         echo 'under certain conditions.' . PHP_EOL . PHP_EOL;
-        echo 'Usage: hm.sh command [params]';
+        echo 'Usage: hm command [params]';
         
         echo PHP_EOL . PHP_EOL;
         
