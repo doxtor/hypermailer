@@ -70,13 +70,15 @@ class emailTask extends \Phalcon\CLI\Task {
     }
 
     public function campaignAction(array $params = null) {
-        // get the campaign information
+
+        // get list of renewal emails
         $campaign = Campaigns::findFirst($params[1]);
 
         Events::log('Campaign '.$campaign->name.' routine status: started', Events::SUCCESS);
 
         // error counter
         $errors  = 0;
+
 
         // instantiate a gateway for this particular dataset
         $gateway = (new Gateway())->gen_datasource(
@@ -120,12 +122,11 @@ class emailTask extends \Phalcon\CLI\Task {
             Events::log('Campaign routine status: ended in error', Events::ERROR);
         } else {
             Events::log('Campaign routine status: succeeded', Events::SUCCESS);
-
-            // update the started date
-            $campaign->date_started = date('Y-m-d H:i:s');
-            $campaign->update();
+            $campaign->update(array(
+                'date_started' => date('Y-m-d H:i:s')
+            ));
         }
 
     }
-    
+
 }
