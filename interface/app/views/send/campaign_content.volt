@@ -13,7 +13,7 @@
                     <label for="templates">Template</label>
                     {{ select('template_id', templates,
                         'useEmpty'  : true,
-                        'emptyText' : 'Please Select a Template',
+                        'emptyText' : 'No Template',
                         'using'     : ['template_id','name'],
                         'class'     : 'form-control') }}
                 </div>

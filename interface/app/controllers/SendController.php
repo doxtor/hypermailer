@@ -153,10 +153,6 @@ class SendController extends BaseController {
         ]);
 
         if ($this->request->isPost()) {
-            if (!$this->request->getPost('template_id')) {
-                $this->flashSession->error('Template must be picked');
-                return null;
-            }
 
             if (!$this->request->getPost('subject')) {
                 $this->flashSession->error('Subject must be provided');
@@ -260,8 +256,9 @@ class SendController extends BaseController {
      */
     public function ajax_preview_campaignAction(){
         // get the template information
-        $template = Templates::findFirst($this->request->getPost('template_id'));
-
+        if($this->request->getPost('template_id')){
+            $template = Templates::findFirst($this->request->getPost('template_id'));
+        }
         // get the posted content
         $content  = $this->request->getPost('content');
 
