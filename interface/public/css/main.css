@@ -1,0 +1,77 @@
+.container {
+    min-width: 1000px;
+    max-width: 1300px;
+    width: auto;
+}
+
+.login {
+    margin-top: 150px;
+    width: 600px !important;
+    min-width: 600px !important;
+}
+
+.menu {
+    margin-top: 40px;
+}
+
+.menu > a,
+.menu > div > a {
+    display: inline-block;
+    padding: 2px 0;
+    margin-left: 20px;
+    border-bottom: #e5e5e5 3px solid;
+    color: #333;
+}
+
+.menu > a:hover,
+.menu > div > a:hover {
+    border-bottom: #aaa 3px solid;
+    text-decoration: none;
+}
+
+.configuration_menu {
+    width: 240px;
+}
+
+.configuration_menu > a {
+    display: block;
+    padding: 5px;
+    border-bottom: #ddd 1px solid;
+    color: #333;
+}
+
+.configuration_menu > a > i {
+    float: right;
+    margin-top: 4px;
+}
+
+.configuration_menu > a:hover {
+    text-decoration: none;
+    background: #eee;
+}
+
+.bar_style {
+    display: block;
+    margin: 0;
+    padding: 8px 0;
+    border-bottom: #eee 3px solid;
+    margin-bottom: 3px;
+}
+
+.left {
+    text-align: left;
+}
+
+.center {
+    text-align: center;
+}
+
+.right {
+    text-align: right;
+}
+
+.shadowy {
+    -webkit-box-shadow: 0px 0px 9px 0px rgba(0,0,0,0.35);
+    -moz-box-shadow: 0px 0px 9px 0px rgba(0,0,0,0.35);
+    box-shadow: 0px 0px 9px 0px rgba(0,0,0,0.35);
+}
