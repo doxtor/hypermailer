@@ -15,10 +15,10 @@
                     <div class="col-xs-4">
                         <div class="form-group">
                             <label>Domain</label>
-                            {{ select('domain', static('Domains::find()'),
+                            {{ select('domain_id', static('Domains::find()'),
                                 'useEmpty' : true,
                                 'emptyText' : 'Please pick a domain',
-                                'using' : ['domain','domain'],
+                                'using' : ['domain_id','domain'],
                                 'class' : 'form-control') }}
                         </div>
                     </div>

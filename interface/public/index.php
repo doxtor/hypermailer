@@ -57,6 +57,12 @@ try {
     // dispatch
     echo (new \Phalcon\Mvc\Application($di))->handle()->getContent();
 
+    // clean up cache after each call
+    if ($config->state->development) {
+        // volt cache
+        array_map('unlink', glob('../app/views/compiled_templates/*.php'));
+    }
+
 } catch(\Phalcon\Exception $e) {
      echo 'I iz broke :( ', $e->getMessage();
 }

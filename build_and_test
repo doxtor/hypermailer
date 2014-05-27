@@ -1,0 +1,9 @@
+#!/bin/bash
+
+EXEC_PATH="`dirname \"$0\"`"
+
+# volt dir writable
+chmod -R 777 interface/app/views/compiled_templates
+
+# start unit tests
+vendor/bin/phpunit --colors --bootstrap test_suite/src/autoload.php test_suite/tests/

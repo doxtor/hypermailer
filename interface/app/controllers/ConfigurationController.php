@@ -65,16 +65,24 @@ class ConfigurationController extends BaseController {
             return $this->response->redirect('configuration/templates');
         }
 
-        if (!$template->delete()) {
-            // constraint error
-            $this->flashSession->error('Template cannot be deleted right now.');
+        try {
+            // attempt delete
+            $template->delete();
+        } catch (Exception $e) {
+            switch ($e->getCode()) {
+                case 23000:
+                    $this->flashSession->error('This template cannot be removed because it is being used');
+                    break;
+
+                default:
+                    $this->flashSession->error('Template cannot be removed right now');
+            }
 
             return $this->response->redirect('configuration/templates');
         }
 
         // success
         $this->flashSession->success('Template was deleted successfully');
-
         return $this->response->redirect('configuration/templates');
     }
 
@@ -138,16 +146,24 @@ class ConfigurationController extends BaseController {
             return $this->response->redirect('configuration/domains');
         }
 
-        if (!$domain->delete()) {
-            // constraint error
-            $this->flashSession->error('Domain cannot be deleted right now.');
+        try {
+            // attempt delete
+            $domain->delete();
+        } catch (Exception $e) {
+            switch ($e->getCode()) {
+                case 23000:
+                    $this->flashSession->error('This domain cannot be removed because it is referenced in a campaign');
+                    break;
+
+                default:
+                    $this->flashSession->error('Domain cannot be removed right now');
+            }
 
             return $this->response->redirect('configuration/domains');
         }
 
         // success
         $this->flashSession->success('Domain was deleted successfully');
-
         return $this->response->redirect('configuration/domains');
     }
 

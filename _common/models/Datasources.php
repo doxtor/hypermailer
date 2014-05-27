@@ -173,27 +173,21 @@ class Datasources extends BaseModel {
         } catch (Exception $e) { var_dump($e->getMessage());exit;}
     }
 
-    static public function delete_view($formatted_view_id) {
-        // get the formatted view information
-        $formatted_view = FormattedViews::findFirst($formatted_view_id);
-
+    static public function delete_view($datasource_id, $formatted_view_name) {
         // check to make sure the view is prefixed with hm_
-        if (!preg_match('/^hm_/', $formatted_view->name)) {
+        if (!preg_match('/^hm_/', $formatted_view_name)) {
             // it's not, end here
             return false;
         }
 
         // open the gateway to the appropriate database
         $gateway = new Gateway();
-        $gateway->register_connection($formatted_view->datasource_id, Gateway::SUPER);
+        $gateway->register_connection($datasource_id, Gateway::SUPER);
 
         // delete the view in the database
         $gateway
             ->getReadConnection()
-            ->query("DROP VIEW " . $formatted_view->name);
-
-        // delete the formatted view record
-        $formatted_view->delete();
+            ->query("DROP VIEW " . $formatted_view_name);
 
         return true;
     }
