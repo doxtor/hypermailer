@@ -225,7 +225,35 @@ class ConfigurationController extends BaseController {
     }
 
     public function systemAction() {
+        if ($this->request->isPost()) {
+            // loop through each post value
+            foreach ($this->request->getPost() as $key => $value) {
+                // get a record based on the key
+                $system = System::findFirstByKey($key);
 
+                // check if there was a record
+                if ($system) {
+                    // there was, update
+                    $system->value = $value;
+                    $system->update();
+
+                    $this->flashSession->success('System Settings have been updated successfully');
+                }
+            }
+        }
+
+        // get the system information
+        $system = System::find();
+
+        // create the array for the system variables
+        $system_variables = [];
+
+        // loop through each system setting to form a single array of those settings
+        foreach ($system as $value) {
+            $system_variables[$value->key] = $value->value;
+        }
+
+        $_POST = $system_variables;
     }
 
     public function create_userAction() {
