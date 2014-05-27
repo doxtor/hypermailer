@@ -70,7 +70,62 @@ class emailTask extends \Phalcon\CLI\Task {
     }
 
     public function campaignAction(array $params = null) {
-        echo $params[1];
+
+        // get list of renewal emails
+        $campaign = Campaigns::findFirst($params[1]);
+
+        Events::log('Campaign '.$campaign->name.' routine status: started', Events::SUCCESS);
+
+        // error counter
+        $errors  = 0;
+
+
+            // instantiate a gateway for this particular dataset
+            $gateway = (new Gateway())->gen_datasource(
+                $campaign->formatted_view->datasource_id,
+                $campaign->formatted_view->name,
+                Gateway::SUPER);
+
+            // get list of people to send the email to
+            $recipients = $gateway->find()->toArray();
+
+            // check to make sure email_address is in the recipients array
+
+            Events::log('Preparing ' . count($recipients) . ' recipients for ' . $campaign->name);
+
+            // create the standard class of batch email options
+            $options = new stdClass();
+            $options->campaign_id = $campaign->mg_campaign_id;
+            $options->from_email  = $campaign->from_name . ' <' . $campaign->from_email . '>';
+            $options->subject     = $campaign->subject;
+            $options->body        = $campaign->content;
+
+            foreach ($recipients as $recipient) {
+                $options->recipients[] = $recipient;
+            }
+
+            // create the mailgun instance
+            $mg = new MailGunAPI($campaign->domain->domain);
+
+            // send the emails
+            try {
+                //$mg->send_batch_email($options);
+
+                Events::log('Sent ' . count($recipients) . ' emails for ' . $campaign->name);
+            } catch (Exception $e) {
+                Events::log($campaign->name . ' failed: ' . $e->getMessage(), Events::ERROR);
+
+                ++$errors;
+            }
+
+        if ($errors) {
+            Events::log('Campaign routine status: ended in error', Events::ERROR);
+        } else {
+            Events::log('Campaign routine status: succeeded', Events::SUCCESS);
+            $campaign->update(array(
+                'date_started' => date('Y-m-d H:i:s')
+            ));
+        }
 
     }
     

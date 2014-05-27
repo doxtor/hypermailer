@@ -25,6 +25,7 @@
             <div class="row">
                 <div class="col-xs-12">
                     <form action="/send/execute_campaign" method="post">
+                        {{ hidden_field("campaign_id", 'value':campaign.campaign_id) }}
                         <button type="submit" class="btn btn-primary" onclick="bconfirm(this, 'Are you sure you want to send this campaign out?');return false;"><i class="fa fa-paper-plane-o"></i> Start Campaign</button>
                         {{ link_to('send/send_preview/' ~ campaign.campaign_id, '<i class="fa fa-search"></i> Send Preview', 'class' : 'btn btn-success') }}
                     </form>

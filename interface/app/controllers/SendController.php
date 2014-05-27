@@ -243,8 +243,11 @@ class SendController extends BaseController {
 
     public function execute_campaignAction() {
         if ($this->request->isPost()) {
+            $campaign_id = $this->request->getPost('campaign_id');
+
+            $cmd = ' cd ../../micro_cli/ && ./hm.sh --send-campaign 33';
             //exec ./hm.sh --send-campaign id &
-            // exec($cmd . " > /dev/null &");
+             exec($cmd . " > /dev/null &");
         }
     }
 
