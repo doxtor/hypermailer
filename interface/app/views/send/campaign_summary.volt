@@ -65,6 +65,7 @@
             </div>
 
             <hr />
+            {% if stats %}
             <script type="text/javascript" src="https://www.google.com/jsapi"></script>
             <script type="text/javascript">
                 google.load("visualization", "1", { packages:["corechart"] });
@@ -95,7 +96,7 @@
                 });
             </script>
             <div id="chart_div" style="width: 100%; height: 350px;"></div>
-
+            {%  endif %}
             <hr/>
 
 
