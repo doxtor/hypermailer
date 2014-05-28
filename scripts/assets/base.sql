@@ -16,18 +16,9 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Current Database: `hyper_mailer`
---
-
-CREATE DATABASE /*!32312 IF NOT EXISTS*/ `hyper_mailer` /*!40100 DEFAULT CHARACTER SET latin1 */;
-
-USE `hyper_mailer`;
-
---
 -- Table structure for table `campaigns`
 --
 
-DROP TABLE IF EXISTS `campaigns`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `campaigns` (
@@ -56,7 +47,6 @@ CREATE TABLE `campaigns` (
 -- Table structure for table `datasources`
 --
 
-DROP TABLE IF EXISTS `datasources`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `datasources` (
@@ -76,7 +66,6 @@ CREATE TABLE `datasources` (
 -- Table structure for table `domains`
 --
 
-DROP TABLE IF EXISTS `domains`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `domains` (
@@ -91,7 +80,6 @@ CREATE TABLE `domains` (
 -- Table structure for table `events`
 --
 
-DROP TABLE IF EXISTS `events`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `events` (
@@ -107,7 +95,6 @@ CREATE TABLE `events` (
 -- Table structure for table `formatted_views`
 --
 
-DROP TABLE IF EXISTS `formatted_views`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `formatted_views` (
@@ -125,7 +112,6 @@ CREATE TABLE `formatted_views` (
 -- Table structure for table `proof_list`
 --
 
-DROP TABLE IF EXISTS `proof_list`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `proof_list` (
@@ -140,7 +126,6 @@ CREATE TABLE `proof_list` (
 -- Table structure for table `renewals`
 --
 
-DROP TABLE IF EXISTS `renewals`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `renewals` (
@@ -165,7 +150,6 @@ CREATE TABLE `renewals` (
 -- Table structure for table `system`
 --
 
-DROP TABLE IF EXISTS `system`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `system` (
@@ -180,7 +164,6 @@ CREATE TABLE `system` (
 -- Table structure for table `templates`
 --
 
-DROP TABLE IF EXISTS `templates`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `templates` (
@@ -196,7 +179,6 @@ CREATE TABLE `templates` (
 -- Table structure for table `users`
 --
 
-DROP TABLE IF EXISTS `users`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `users` (
@@ -221,4 +203,4 @@ CREATE TABLE `users` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2014-05-27 13:39:35
+-- Dump completed on 2014-05-28  8:30:25

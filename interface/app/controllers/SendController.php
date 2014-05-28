@@ -134,7 +134,7 @@ class SendController extends BaseController {
             $campaign->update();
 
             // success
-            return $this->response->redirect('send/campaign_content/' . $campaign_id);
+            return $this->response->redirect('send/campaign_summary/' . $campaign_id);
         }
 
         $_POST = $campaign->toArray();
@@ -208,7 +208,13 @@ class SendController extends BaseController {
         ]);
     }
 
-    public function send_previewAction($campaign_id){
+    public function send_previewAction($campaign_id) {
+        // check to make sure the proof list has people in it
+        if (ProofList::count() == 0) {
+            $this->flashSession->error('You must add people to the proof list before you can proof this campaign');
+            return $this->response->redirect('send/campaign_summary/' . $campaign_id);
+        }
+
         // get the campaign
         $campaign = Campaigns::findFirst($campaign_id);
 
@@ -237,14 +243,20 @@ class SendController extends BaseController {
         }
     }
 
-    public function execute_campaignAction() {
+    public function execute_campaignAction($campaign_id) {
         if ($this->request->isPost()) {
-            $campaign_id = $this->request->getPost('campaign_id');
+            // get the campaign information
+            $campaign = Campaigns::findFirst($campaign_id);
 
-            $cmd = '../../micro_cli/hm --send-campaign '.$campaign_id;
-            //exec ./hm --send-campaign id &
-            exec($cmd . " > /dev/null &");
+            if (!$campaign) {
+                $this->flashSession->error('No campaign found with this id');
+                return $this->response->redirect('send/campaigns');
+            }
 
+            // start the background job for the campaign
+            exec("../../micro_cli/hm --send-campaign $campaign_id > /dev/null &");
+
+            // success
             $this->flashSession->success('Campaign has been started');
             return $this->response->redirect('send/campaign_summary/' . $campaign_id);
         }
@@ -258,9 +270,12 @@ class SendController extends BaseController {
         // get the template information
         $template = Templates::findFirst($this->request->getPost('template_id'));
 
-        if($template){
+        // check this is a valid template (or no template)
+        if ($template) {
+            // valid, string together the header, content, and footer
             $content = $template->header . $this->request->getPost('content') . $template->footer;
         } else {
+            // invalid, content is the content
             $content  = $this->request->getPost('content');
         }
 

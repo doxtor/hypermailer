@@ -89,8 +89,6 @@ class emailTask extends \Phalcon\CLI\Task {
         // get list of people to send the email to
         $recipients = $gateway->find()->toArray();
 
-        // check to make sure email_address is in the recipients array
-
         Events::log('Preparing ' . count($recipients) . ' recipients for ' . $campaign->name);
 
         // create the standard class of batch email options

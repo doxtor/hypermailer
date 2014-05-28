@@ -8,8 +8,8 @@
                 <tr>
                     <th>Name</th>
                     <th>Domain</th>
-                    <th class="center" style="width: 150px;">Date Created</th>
-                    <th class="center" style="width: 150px;">Date Started</th>
+                    <th class="center" style="width: 165px;">Date Created</th>
+                    <th class="center" style="width: 165px;">Date Started</th>
                     <th class="center" style="width:100px;">Status</th>
                     <th class="center" style="width: 80px;">Remove</th>
                 </tr>

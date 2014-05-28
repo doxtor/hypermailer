@@ -4,6 +4,10 @@
     width: auto;
 }
 
+hr {
+    border-top: #ccc 1px solid;
+}
+
 .login {
     margin-top: 150px;
     width: 600px !important;
