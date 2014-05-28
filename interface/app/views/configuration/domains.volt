@@ -5,7 +5,6 @@
             {{ flashSession.output() }}
             <h4 class="bar_style">
                 Domains
-                <a href="/configuration/create_domain" class="btn btn-xs btn-primary pull-right">Create New Domain</a>
                 <a href="/configuration/mailgun_domain_import" class="btn btn-xs btn-danger pull-right" onclick="bconfirm(this, 'This will load all domains from Mailgun to Hypermailer that aren\'t already present in your domain list. Continue?'); return false;">Import From Mailgun</a>
             </h4>
             <table class="table table-condensed table-striped">

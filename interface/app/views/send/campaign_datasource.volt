@@ -3,7 +3,7 @@
     <div class="row">
         <div class="col-xs-12">
             {{ flashSession.output() }}
-            <h4 class="bar_style">Create Campaign</h4>
+            <h4 class="bar_style">Select Datasource</h4>
             <form action="" method="post">
                 <div class="form-group">
                     <label for="datasource">Datasource - View</label>
