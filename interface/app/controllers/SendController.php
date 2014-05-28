@@ -276,9 +276,18 @@ class SendController extends BaseController {
      * used in:
      * /send/campaign_content.volt
      */
-    public function ajax_preview_campaignAction(){
+    public function ajax_preview_campaignAction() {
+        // get the template id
+        $template_id = $this->request->getPost('template_id');
+
+        if (!$template_id) {
+            // no template id provided, the content is the content
+            echo $this->request->getPost('content');
+            exit;
+        }
+
         // get the template information
-        $template = Templates::findFirst($this->request->getPost('template_id'));
+        $template = Templates::findFirst();
 
         // check this is a valid template (or no template)
         if ($template) {

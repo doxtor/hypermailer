@@ -65,46 +65,48 @@
             </div>
 
             <hr />
-            <script type="text/javascript" src="https://www.google.com/jsapi"></script>
-            <script type="text/javascript">
-                google.load("visualization", "1", { packages:["corechart"] });
-                google.setOnLoadCallback(drawChart);
-                function drawChart() {
-                    var data = google.visualization.arrayToDataTable([
-                        ['Task', 'Count', {role: 'style' }],
-                        ['Delivered',      {{ stats.total.delivered }}, '#5CB85C'],
-                        ['Dropped', {{ stats.total.dropped }}, '#FF9829'],
-                        ['Bounced',    {{ stats.total.bounced }}, '#D9534F'],
-                        ['Unique Clicks', {{ stats.unique.clicked.recipient }}, '#5CB85C'],
-                        ['Unique Opens', {{ stats.unique.opened.recipient }}, '#428BCA' ],
-                        ['Unsubscribes', {{ stats.total.unsubscribed }}, '#FF9829' ],
-                        ['Complaints', {{ stats.total.complained }}, '#D9534F' ],
 
-                    ]);
+            {% if campaign.date_started %}
+                <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+                <script type="text/javascript">
+                    google.load('visualization', '1', { packages:['corechart'] });
+                    google.setOnLoadCallback(drawChart);
+                    function drawChart() {
+                        var data = google.visualization.arrayToDataTable([
+                            ['Task',          'Count',                              { role: 'style' }],
+                            ['Delivered',     {{ stats.total.delivered }},          '#5CB85C'],
+                            ['Dropped',       {{ stats.total.dropped }},            '#FF9829'],
+                            ['Bounced',       {{ stats.total.bounced }},            '#D9534F'],
+                            ['Unique Clicks', {{ stats.unique.clicked.recipient }}, '#5CB85C'],
+                            ['Unique Opens',  {{ stats.unique.opened.recipient }},  '#428BCA' ],
+                            ['Unsubscribes',  {{ stats.total.unsubscribed }},       '#FF9829' ],
+                            ['Complaints',    {{ stats.total.complained }},         '#D9534F' ]
+                        ]);
 
-                    var options = {
-                        title: 'Campaign Stats',
-                        legend: { position: "none" }
-                    };
+                        var options = {
+                            title: 'Campaign Stats',
+                            legend: { position: 'none' }
+                        };
 
-                    var chart = new google.visualization.BarChart(document.getElementById('chart_div'));
-                    chart.draw(data, options);
-                }
-                $(window).resize(function(){
-                    drawChart();
-                });
-            </script>
-            <div id="chart_div" style="width: 100%; height: 350px;"></div>
+                        var chart = new google.visualization.BarChart(document.getElementById('chart_div'));
+                        chart.draw(data, options);
+                    }
+                    $(window).resize(function(){
+                        drawChart();
+                    });
+                </script>
+                <div id="chart_div" style="width: 100%; height: 350px;"></div>
+            {% endif %}
 
-            <hr/>
-
-
+            <hr />
 
             <div class="row">
-                <div class="col-xs-12" style="border-top: #666 8px solid; border-bottom: #666 8px solid;">
-                    {{ campaign.template.header }}
-                    {{ campaign.content }}
-                    {{ campaign.template.footer }}
+                <div class="col-xs-12">
+                    <div style="border-top: #666 8px solid; border-bottom: #666 8px solid;">
+                        {{ campaign.template.header }}
+                        {{ campaign.content }}
+                        {{ campaign.template.footer }}
+                    </div>
                 </div>
             </div>
         </div>

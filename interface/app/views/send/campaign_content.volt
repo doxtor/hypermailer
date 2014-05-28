@@ -5,17 +5,23 @@
             {{ flashSession.output() }}
             <h4 class="bar_style">Create Email Content</h4>
             <form action="" method="post">
+                <div class="row">
+                    <div class="col-xs-6">
+                        <div class="form-group">
+                            <label>From Name</label>
+                            {{ text_field('from_name', 'class' : 'form-control') }}
+                        </div>
+                    </div>
+                    <div class="col-xs-6">
+                        <div class="form-group">
+                            <label>From Email</label>
+                            {{ text_field('from_email', 'class' : 'form-control') }}
+                        </div>
+                    </div>
+                </div>
                 <div class="form-group">
                     <label>Subject</label>
                     {{ text_field('subject', 'class' : 'form-control') }}
-                </div>
-                <div class="form-group">
-                    <label>From Name</label>
-                    {{ text_field('from_name', 'class' : 'form-control') }}
-                </div>
-                <div class="form-group">
-                    <label>From Email</label>
-                    {{ text_field('from_email', 'class' : 'form-control') }}
                 </div>
                 <div class="form-group">
                     <label for="templates">Template</label>
@@ -42,11 +48,11 @@
     <script>
         $(function() {
             $('.preview').click(function() {
-                    $('.preview_content').load('/send/ajax_preview_campaign/',
-                        {
-                            'template_id' : $('#template_id').val(),
-                            'content'     : $('#content').val()
-                        });
+                $('.preview_content').load('/send/ajax_preview_campaign/',
+                    {
+                        'template_id' : $('#template_id').val(),
+                        'content'     : $('#content').val()
+                    });
             });
         });
     </script>
