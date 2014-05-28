@@ -166,6 +166,8 @@ class SendController extends BaseController {
 
             $campaign->template_id  = $this->request->getPost('template_id');
             $campaign->subject      = $this->request->getPost('subject');
+            $campaign->from_name    = $this->request->getPost('from_name');
+            $campaign->from_email   = $this->request->getPost('from_email');
             $campaign->content      = $this->request->getPost('content');
 
             $campaign->update();

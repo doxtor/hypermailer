@@ -10,6 +10,14 @@
                     {{ text_field('subject', 'class' : 'form-control') }}
                 </div>
                 <div class="form-group">
+                    <label>From Name</label>
+                    {{ text_field('from_name', 'class' : 'form-control') }}
+                </div>
+                <div class="form-group">
+                    <label>From Email</label>
+                    {{ text_field('from_email', 'class' : 'form-control') }}
+                </div>
+                <div class="form-group">
                     <label for="templates">Template</label>
                     {{ select('template_id', templates,
                         'useEmpty'  : true,

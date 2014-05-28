@@ -33,6 +33,8 @@ CREATE TABLE `campaigns` (
   `template_id` int(10) unsigned DEFAULT NULL,
   `content` text,
   `subject` varchar(128) DEFAULT NULL,
+  `from_name` varchar(64) DEFAULT NULL,
+  `from_email` varchar(64) DEFAULT NULL,
   PRIMARY KEY (`campaign_id`),
   KEY `fk_formatted_views_campaigns` (`formatted_view_id`),
   KEY `fk_templates_campaigns` (`template_id`),
