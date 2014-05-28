@@ -78,9 +78,9 @@
                             ['Dropped',       {{ stats.total.dropped }},            '#FF9829'],
                             ['Bounced',       {{ stats.total.bounced }},            '#D9534F'],
                             ['Unique Clicks', {{ stats.unique.clicked.recipient }}, '#5CB85C'],
-                            ['Unique Opens',  {{ stats.unique.opened.recipient }},  '#428BCA' ],
-                            ['Unsubscribes',  {{ stats.total.unsubscribed }},       '#FF9829' ],
-                            ['Complaints',    {{ stats.total.complained }},         '#D9534F' ]
+                            ['Unique Opens',  {{ stats.unique.opened.recipient }},  '#428BCA'],
+                            ['Unsubscribes',  {{ stats.total.unsubscribed }},       '#FF9829'],
+                            ['Complaints',    {{ stats.total.complained }},         '#D9534F']
                         ]);
 
                         var options = {
