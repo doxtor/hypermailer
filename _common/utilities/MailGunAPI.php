@@ -113,7 +113,7 @@ class MailGunAPI {
      */
     public function get_campaign_stats($mg_campaign_id, $event = self::EVENT_EVENTS) {
         // send the request for campaign stats
-        $result = $this->mg->get("$this->domain/campaigns/$mg_campaign_id/$event");
+        $result = $this->mg->get("$this->domain/campaigns/$mg_campaign_id/stats");
 
         return $result;
     }
@@ -166,7 +166,8 @@ class MailGunAPI {
         $batch->setHtmlBody($options->body);
         $batch->addCampaignId($options->campaign_id);
         $batch->addCustomHeader('X-Mailgun-Native-Send', 'true');
-        $batch->setClickTracking(true);
+        $batch->addCustomHeader('o:tracking-clicks', 'yes');
+        $batch->addCustomHeader('o:tracking-opens', 'yes');
         //$batch->setTestMode(true);
 
         // loop through and add each recipient

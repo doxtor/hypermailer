@@ -192,6 +192,13 @@ class SendController extends BaseController {
         } elseif (!$campaign->content) {
             return $this->response->redirect('send/campaign_content/' . $campaign_id);
         }
+        if($campaign->date_started){
+            $mg = new MailGunAPI($campaign->domain->domain);
+            $stats = $mg->get_campaign_stats($campaign->mg_campaign_id);
+        } else {
+            $stats = NULL;
+        }
+
 
         // create a datasource from the information available
         $datasource = (new Gateway())->gen_datasource(
@@ -206,7 +213,8 @@ class SendController extends BaseController {
             'campaign'   => $campaign,
             'template'   => $campaign->template->name,
             'view'       => $campaign->formatted_view->name,
-            'data_count' => $data_count
+            'data_count' => $data_count,
+            'stats'      => $stats->http_response_body
         ]);
     }
 

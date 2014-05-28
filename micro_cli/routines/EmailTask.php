@@ -107,7 +107,7 @@ class emailTask extends \Phalcon\CLI\Task {
 
         // send the emails
         try {
-            //$mg->send_batch_email($options);
+            $mg->send_batch_email($options);
 
             Events::log('Sent ' . count($recipients) . ' emails for ' . $campaign->name);
         } catch (Exception $e) {
