@@ -86,15 +86,14 @@ class DatasourcesController extends BaseController {
             return $this->response->redirect('datasources');
         }
 
-        $datasource_save = $datasource;
-
         try {
-            // attempt delete
-            $datasource->delete();
-
             // delete the users
-            Datasources::delete_users($datasource_save);
+            Datasources::delete_users($datasource);
+
+            // delete the datasource
+            $datasource->delete();
         } catch (Exception $e) {
+            //var_dump($e->getMessage());exit;
             switch ($e->getCode()) {
                 case 23000:
                     $this->flashSession->error('This datasource cannot be removed because it is being used or has views');
@@ -168,10 +167,7 @@ class DatasourcesController extends BaseController {
             }
 
             // create the view
-            if (!Datasources::create_view($datasource_id, $name, 'select null as x')) {
-                $this->flashSession->error('View could not be created at this time');
-                return $this->response->redirect('datasources');
-            }
+            Datasources::create_view($datasource_id, $name, 'select null as x');
 
             // get formatted view information
             $formatted_view = FormattedViews::findFirstByName($name);
@@ -196,10 +192,7 @@ class DatasourcesController extends BaseController {
             }
 
             // attempt to update the view
-            if (!Datasources::update_view($formatted_view->datasource_id, $formatted_view_id, $formatted_view->name, $query)) {
-                $this->flashSession->error('View could not be updated at this time');
-                return null;
-            }
+            Datasources::update_view($formatted_view->datasource_id, $formatted_view_id, $formatted_view->name, $query);
 
             // go back to list of databases
             $this->flashSession->success('View has been updated successfully');

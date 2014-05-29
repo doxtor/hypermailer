@@ -27,27 +27,20 @@ while (true) {
         break;
     }
 
-    $result = $conn->query('show databases like \'hyper_mailer2\'');
+    $result = $conn->query('show databases like \'hyper_mailer\'');
 
     if ($result->num_rows == 0) {
         echo PHP_EOL;
         echo 'Creating Database';
         echo PHP_EOL;
 
-        $conn->query('create database hyper_mailer2');
-        var_dump($conn->error);
+        $conn->query('create database hyper_mailer');
 
         echo PHP_EOL;
         echo 'Writing Base Schema to Database';
         echo PHP_EOL;
 
-        //$conn->query('use hyper_mailer2');
-        //$conn->multi_query(file_get_contents('assets/base.sql'));
-        //var_dump($conn->error);
-
-        //$conn->commit();
-        //$conn->close();
-        exec("mysql -u$user -p$pass hyper_mailer2 < assets/base.sql");
+        exec("mysql -u$user -p$pass hyper_mailer < assets/base.sql");
 
         $email = 'admin' . rand(1000,9999) . '@svgflorida.com';
 
@@ -57,9 +50,8 @@ while (true) {
         echo '  Password: changemenow123';
         echo PHP_EOL;
 
-        $conn = new mysqli($host, $user, $pass, 'hyper_mailer2');
+        $conn = new mysqli($host, $user, $pass, 'hyper_mailer');
         $conn->multi_query("insert into users values ('','Admin','$email','$2a$08$5vB00Y0jELzohl42jqfhIu2wK6MuHLFTmkLNuCnTop.VK92vngiLG');");
-        var_dump($conn->error);
         $conn->close();
     } else {
         echo PHP_EOL;

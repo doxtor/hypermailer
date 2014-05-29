@@ -70,31 +70,20 @@ class Datasources extends BaseModel {
     }
 
     static public function create_view($datasource_id, $view_name, $view_query) {
-        try {
-            // open the gateway to the appropriate database
-            $db = (new Gateway())->register_connection($datasource_id, Gateway::SUPER)->getWriteConnection();
+        // save the formatted view record
+        $formatted_view = new FormattedViews();
 
-            // start transaction
-            $db->begin();
+        $formatted_view->datasource_id = $datasource_id;
+        $formatted_view->name          = $view_name;
+        $formatted_view->query         = $view_query;
 
-            // save the formatted view record
-            $database = Injector::config()->database->name;
-            $table    = (new FormattedViews())->getSource();
+        $formatted_view->create();
 
-            $db->query(
-                "INSERT INTO " . $database  . "." . $table . " ".
-                "VALUES (''," . $datasource_id . ",'" . $view_name . "','" . addslashes($view_query) . "')");
+        // open the gateway to the appropriate database
+        $db = (new Gateway())->register_connection($datasource_id, Gateway::SUPER)->getWriteConnection();
 
-            $db->query("CREATE OR REPLACE VIEW $view_name AS $view_query");
-
-            $db->commit();
-
-            return true;
-        } catch (Exception $e) {
-            $db->rollback();
-
-            return false;
-        }
+        // create the view
+        $db->query("CREATE OR REPLACE VIEW $view_name AS $view_query");
     }
 
     static public function read_views($datasource_id, $get_all = false) {
@@ -102,14 +91,11 @@ class Datasources extends BaseModel {
         $datasource = Datasources::findFirst($datasource_id);
 
         // open the gateway to the appropriate database
-        $gateway = new Gateway();
-        $gateway->register_connection($datasource_id, Gateway::SUPER);
+        $db = (new Gateway())->register_connection($datasource_id, Gateway::SUPER)->getWriteConnection();
 
         // get a resultset of the records for the datasource views
-        $views = new Phalcon\Mvc\Model\Resultset\Simple(null, $gateway,
-            $gateway
-                ->getReadConnection()
-                ->query("SHOW FULL TABLES IN " . $datasource->database_name . " WHERE TABLE_TYPE LIKE 'VIEW'"));
+        $views = new Phalcon\Mvc\Model\Resultset\Simple(null, $db,
+            $db->query("SHOW FULL TABLES IN " . $datasource->database_name . " WHERE TABLE_TYPE LIKE 'VIEW'"));
 
         // establish final list for the views
         $final_view_list = [];
@@ -141,36 +127,15 @@ class Datasources extends BaseModel {
 
     static public function update_view($datasource_id, $formatted_view_id, $view_name, $view_query) {
         // open the gateway to the appropriate database
-        $gateway = new Gateway();
-        $gateway->register_connection($datasource_id, Gateway::SUPER);
+        $db = (new Gateway())->register_connection($datasource_id, Gateway::SUPER)->getWriteConnection();
 
-        try {
-            $manager = new \Phalcon\Mvc\Model\Transaction\Manager();
-            $transaction = $manager->get();
+        // replace the view in the database
+        $db->query("CREATE OR REPLACE VIEW $view_name AS $view_query");
 
-            // add the view to the database
-            $gateway
-                ->setTransaction($transaction)
-                ->getReadConnection()
-                ->query("CREATE OR REPLACE VIEW $view_name AS $view_query");
-
-            // save the formatted view record
-            $formatted_view = new FormattedViews();
-
-            $formatted_view
-                ->setTransaction($transaction)
-                ->getWriteConnection()
-                ->query(
-                    "UPDATE " . $formatted_view->getSource() . " " .
-                    "SET " .
-                    "name  = '" . $view_name              . "', ".
-                    "query = '" . addslashes($view_query) . "'  ".
-                    "WHERE formatted_view_id = " . $formatted_view_id);
-
-            $transaction->commit();
-
-            return true;
-        } catch (Exception $e) { var_dump($e->getMessage());exit;}
+        // save the formatted view record
+        $formatted_view = FormattedViews::findFirst($formatted_view_id);
+        $formatted_view->query = $view_query;
+        $formatted_view->update();
     }
 
     static public function delete_view($datasource_id, $formatted_view_name) {
@@ -181,13 +146,10 @@ class Datasources extends BaseModel {
         }
 
         // open the gateway to the appropriate database
-        $gateway = new Gateway();
-        $gateway->register_connection($datasource_id, Gateway::SUPER);
+        $db = (new Gateway())->register_connection($datasource_id, Gateway::SUPER)->getWriteConnection();
 
         // delete the view in the database
-        $gateway
-            ->getReadConnection()
-            ->query("DROP VIEW " . $formatted_view_name);
+        $db->query("DROP VIEW " . $formatted_view_name);
 
         return true;
     }
@@ -200,16 +162,13 @@ class Datasources extends BaseModel {
 
     static public function query_valid($datasource_id, $query, &$message = null) {
         // open the gateway to the appropriate database
-        $gateway = new Gateway();
-        $gateway->register_connection($datasource_id, Gateway::REGULAR);
+        $db = (new Gateway())->register_connection($datasource_id, Gateway::REGULAR)->getWriteConnection();
 
         // looking for PDO errors, or it's valid
         try {
             // test the query
-            $gateway = new Phalcon\Mvc\Model\Resultset\Simple(null, $gateway,
-                $gateway
-                    ->getReadConnection()
-                    ->query($query));
+            $gateway = new Phalcon\Mvc\Model\Resultset\Simple(null, $db,
+                $db->query($query));
 
             return true;
         } catch (Exception $e) {
