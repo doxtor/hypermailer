@@ -112,6 +112,55 @@ class SendController extends BaseController {
         ]);
     }
 
+    public function campaign_infoAction($campaign_id) {
+        // make sure a campaign id was provided
+        if (!$campaign_id) return $this->response->redirect('send');
+
+        $campaign = Campaigns::findFirst($campaign_id);
+
+        if ($this->request->isPost()) {
+            try {
+                $manager = new \Phalcon\Mvc\Model\Transaction\Manager();
+                $transaction = $manager->get();
+
+                $campaign->setTransaction($transaction);
+
+                $campaign->name        = $this->request->getPost('name');
+                $campaign->description = $this->request->getPost('description');
+
+                if (!$campaign->update()) {
+                    $this->flashSession->error($campaign->get_val_errors());
+                    $transaction->rollback();
+                }
+
+                // check if name changed
+                if ($campaign->hasChanged('name')) {
+                    try {
+                        // create a new mailgun instance
+                        $mg = new MailGunAPI($campaign->domain->domain);
+
+                        // attempt to update the campaign
+                        $mg->update_campaign($campaign->mg_campaign_id, $campaign->name);
+                    } catch (Exception $e) {
+                        // domain doesn't exist, maybe
+                        $this->flashSession->error(
+                            'Mailgun error occurred, usual cause: Domain not added to Mailgun or invalid Campaign ID');
+
+                        $transaction->rollback();
+                    }
+                }
+
+                // commit the changes up to this point
+                $transaction->commit();
+
+                // success
+                $this->response->redirect('send/campaign_summary/' . $campaign_id);
+            } catch (Exception $e) { }
+        }
+
+        $_POST = $campaign->toArray();
+    }
+
     public function campaign_datasourceAction($campaign_id) {
         // make sure a campaign id was provided
         if (!$campaign_id) return $this->response->redirect('send');

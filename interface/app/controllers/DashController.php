@@ -9,8 +9,13 @@ class DashController extends BaseController {
 
 
     public function indexAction() {
+        $events = Events::find([
+            'order' => 'event_id desc',
+            'limit' => 1000,
+        ]);
+
         $this->view->setVars([
-            'events' => Events::find(['order' => 'event_id desc'])
+            'events' => $events
         ]);
     }
 

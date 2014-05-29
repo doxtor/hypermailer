@@ -63,7 +63,7 @@
             <br /><br />
 
             <div class="well well-sm">
-                sudo python /path/to/hypermailer/scripts/install.py
+                sudo php /path/to/hypermailer/scripts/install.php
             </div>
 
             <hr />
@@ -84,9 +84,9 @@
                     <br /><br />
 
                     <div class="alert alert-info well-sm">
-                        <strong>Note:</strong> After you create the domains, Hypermailer can import those into your system.
-                        To take advantage of this feature, click the "Import From Mailgun" button from the Config > Domains
-                        section. This will not replace any domains that you've already created.
+                        <strong>Note:</strong> After you create the domains, Hypermailer will need to import those into
+                        your system. To do this, click the "Import From Mailgun" button from the Config > Domains
+                        section. This will not replace any domains that are already there, only add the ones that aren't.
                     </div>
                 </li>
             </ul>
@@ -167,13 +167,20 @@
             <hr />
 
             <h3 id="renewals">Renewals (fixed and recurring)</h3><br />
-            Renewals are optional but are executed via a cron job set to run at a specified time. The entry you should
-            make into the crontab if you desire is:
+            Renewals are optional but are executed via a cron job set to run at a specified time. You'll need to make
+            an entry into your crontab for a specified period of time that you would like the emails to go out. A few
+            examples are:
 
             <br /><br />
 
             <div class="well well-sm">
-                * 8 0 0 0 /path/to/hypermailer/micro_cron/hm.sh --send-renewals # send at 8am daily
+                # send at 8am daily<br />
+                * 8 0 0 0 /path/to/hypermailer/micro_cli/hm --send-renewals<br />
+
+                <br />
+
+                # send at 1am on the 1st of each month<br />
+                * 1 1 0 0 /path/to/hypermailer/micro_cli/hm --send-renewals
             </div>
 
             Inside of the Renewals section, you will be able to create, update, and delete renewal emails. Each

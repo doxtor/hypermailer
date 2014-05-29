@@ -1,7 +1,7 @@
 {% extends 'layouts/master.volt' %}
 {% block content %}
     <div class="row">
-        <div class="col-xs-6">
+        <div class="col-xs-12">
             {{ flashSession.output() }}
             <h4 class="bar_style">Update User</h4>
             <form action="" method="post">

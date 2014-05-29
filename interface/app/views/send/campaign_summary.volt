@@ -8,26 +8,28 @@
             <h1 class="center">{{ campaign.name }}</h1>
             <h4 class="center">{{ campaign.description }}</h4>
 
-            <hr />
+            {% if not campaign.date_started %}
+                <hr />
+                <div class="row">
+                    <div class="col-xs-12 center">
+                        <form action="/send/execute_campaign/{{ campaign.campaign_id }}" method="post">
+                            <button type="submit" class="btn btn-danger" onclick="bconfirm(this, 'Are you sure you want to send this campaign out?'); return false;">
+                                <i class="fa fa-paper-plane-o"></i> Start Campaign
+                            </button>
 
-            <div class="row">
-                <div class="col-xs-12 center">
-                    <form action="/send/execute_campaign/{{ campaign.campaign_id }}" method="post">
-                        <button type="submit" class="btn btn-danger" onclick="bconfirm(this, 'Are you sure you want to send this campaign out?'); return false;">
-                            <i class="fa fa-paper-plane-o"></i> Start Campaign
-                        </button>
+                            <div class="vertical_black_bar"></div>
 
-                        <div style="display: inline-block; height: 60px; width: 8px; background: #000; vertical-align: middle;"></div>
-                        <a href="send/send_preview/{{ campaign.campaign_id }}" class="btn btn-success" onclick="bconfirm(this, 'Are you sure you want to send a proof email out?'); return false;">
-                            <i class="fa fa-search"></i> Send Preview
-                        </a>
-                        <button type="button" class="btn btn-success"><i class="fa fa-search"></i> View Recipients</button>
-                        <a href="/send/campaign_info/{{ campaign.campaign_id }}" class="btn btn-primary"><i class="fa fa-bars"></i> Modify Basic Info</a>
-                        <a href="/send/campaign_datasource/{{ campaign.campaign_id }}" class="btn btn-primary"><i class="fa fa-database"></i> Modify Datasource</a>
-                        <a href="/send/campaign_content/{{ campaign.campaign_id }}" class="btn btn-primary"><i class="fa fa-paragraph"></i> Modify Content</a>
-                    </form>
+                            <a href="/send/send_preview/{{ campaign.campaign_id }}" class="btn btn-success" onclick="bconfirm(this, 'Are you sure you want to send a proof email out?'); return false;">
+                                <i class="fa fa-search"></i> Send Preview
+                            </a>
+                            <button type="button" class="btn btn-success"><i class="fa fa-search"></i> View Recipients</button>
+                            <a href="/send/campaign_info/{{ campaign.campaign_id }}" class="btn btn-primary"><i class="fa fa-bars"></i> Modify Basic Info</a>
+                            <a href="/send/campaign_datasource/{{ campaign.campaign_id }}" class="btn btn-primary"><i class="fa fa-database"></i> Modify Datasource</a>
+                            <a href="/send/campaign_content/{{ campaign.campaign_id }}" class="btn btn-primary"><i class="fa fa-paragraph"></i> Modify Content</a>
+                        </form>
+                    </div>
                 </div>
-            </div>
+            {% endif %}
 
             <hr />
             <h3 class="center">
